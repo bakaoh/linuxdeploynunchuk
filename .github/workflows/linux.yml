@@ -79,3 +79,13 @@ jobs:
         run: |
           ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" LDFLAGS="-lcrypto"
           make -j8
+
+      - name: Configure CMake
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOOST_ROOT=${{runner.workspace}}/boost_1_73_0 -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
+
+      - name: Build nunchuk-qt
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --config $BUILD_TYPE
