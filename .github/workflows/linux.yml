@@ -80,18 +80,14 @@ jobs:
           ./configure --enable-tempstore=yes CFLAGS="-DSQLITE_HAS_CODEC" LDFLAGS="-lcrypto"
           make -j8
 
-      - name: Create Build Environment
-        run: cmake -E make_directory ${{runner.workspace}}/build
-
-      - name: Configure CMake
-        shell: bash
-        working-directory: ${{runner.workspace}}/build
-        run: cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOOST_ROOT=${{runner.workspace}}/boost_1_73_0 -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
-
       - name: Build nunchuk-qt
-        working-directory: ${{runner.workspace}}/build
+        working-directory: ${{runner.workspace}}
         shell: bash
-        run: cmake --build . --config $BUILD_TYPE
+        run: |
+          cmake -E make_directory ${{runner.workspace}}/build
+          cd build
+          cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOOST_ROOT=${{runner.workspace}}/boost_1_73_0 -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
+          cmake --build . --config $BUILD_TYPE
 
       - name: Deploy AppImage
         working-directory: ${{runner.workspace}}/linuxdeploynunchuk
@@ -99,6 +95,7 @@ jobs:
           wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
           chmod a+x linuxdeployqt-7-x86_64.AppImage
           cp ${{runner.workspace}}/build/nunchuck-client-qt deploy/appdir/bin/nunchuk-client-qt
+          export PATH="/opt/qt512/bin:$PATH"
           cd nunchuk-linux
           ../linuxdeployqt-7-x86_64.AppImage ../deploy/appdir/share/applications/nunchuk.desktop -appimage -qmldir=${{runner.workspace}}/nunchuk-qt
           cd ..
