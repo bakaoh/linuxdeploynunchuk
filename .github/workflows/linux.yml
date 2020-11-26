@@ -26,7 +26,7 @@ jobs:
       - name: Install packages
         uses: ryankurte/action-apt@v0.2.0
         with:
-          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev libpulse-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
+          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev libx11-xcb-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
 
       - name: Cache Qt
         uses: actions/cache@v2
@@ -58,7 +58,7 @@ jobs:
           ./bootstrap.sh --prefix=${{runner.workspace}}/boost_1_73_0
           ./b2 install
  
-      - name: Cache contrib
+      - name: Cache libnunchuk contrib
         uses: actions/cache@v2
         id: cache-contrib
         with:
@@ -87,7 +87,7 @@ jobs:
           cmake -E make_directory ${{runner.workspace}}/build
           cd build
           cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DBOOST_ROOT=${{runner.workspace}}/boost_1_73_0 -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
-          cmake --build . --config $BUILD_TYPE
+          cmake --build . --config $BUILD_TYPE -j8
 
       - name: Deploy AppImage
         working-directory: ${{runner.workspace}}/linuxdeploynunchuk
