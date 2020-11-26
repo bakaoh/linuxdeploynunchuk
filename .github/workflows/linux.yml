@@ -44,8 +44,10 @@ jobs:
           ./b2 install
         
       - name: Checkout nunchuk-qt
+        env:
+          GITLAB_AT: ${{ secrets.GITLAB_AT }}
         run: |
-          git clone --branch=sprint4 https://gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
+          git clone --branch=sprint4 https://bakaoh:$GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
           cd nunchuk-qt
           git submodule update --depth 1 --init --recursive
           
