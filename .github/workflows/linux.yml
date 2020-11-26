@@ -32,6 +32,7 @@ jobs:
           mkdir -p $HOME/.config/qtchooser/
           echo "/opt/qt512/bin" > $HOME/.config/qtchooser/default.conf
           echo "/opt/qt512/lib" >> $HOME/.config/qtchooser/default.conf
+          export $PATH=/opt/qt512/bin:$PATH
           qmake -v
 
       - name: Cache Qt
