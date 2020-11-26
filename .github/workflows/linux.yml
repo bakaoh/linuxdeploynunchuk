@@ -90,7 +90,7 @@ jobs:
           mv ${{runner.workspace}}/build/nunchuck-client-qt deploy/appdir/bin/nunchuk-client-qt
           export PATH="/opt/qt512/bin:$PATH"
           cd nunchuk-linux
-          ../linuxdeployqt-7-x86_64.AppImage ../deploy/appdir/share/applications/nunchuk.desktop -appimage -qmldir=${{runner.workspace}}/nunchuk-qt
+          ../linuxdeployqt-7-x86_64.AppImage ../deploy/appdir/share/applications/nunchuk.desktop -appimage -qmldir=${{runner.workspace}}/nunchuk-qt -no-copy-copyright-files -no-translations
       
       - name: Get the version
         id: get_version
