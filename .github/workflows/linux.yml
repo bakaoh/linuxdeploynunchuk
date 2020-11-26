@@ -11,7 +11,22 @@ jobs:
     runs-on: ubuntu-16.04
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+ 
+      - name: Checkout nunchuk-qt
+        working-directory: ${{runner.workspace}}
+        env:
+          GITLAB_AT: ${{ secrets.GITLAB_AT }}
+        run: |
+          git clone --branch=sprint4 https://bakaoh:$GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
+          cd nunchuk-qt
+          git submodule update --depth 1 --init --recursive
+          
+      - name: Install packages
+        uses: ryankurte/action-apt@v0.2.0
+        with:
+          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
 
       - name: Cache Qt
         uses: actions/cache@v2
@@ -42,21 +57,7 @@ jobs:
           cd boost_1_73_0
           ./bootstrap.sh --prefix=${{runner.workspace}}/boost_1_73_0
           ./b2 install
-        
-      - name: Checkout nunchuk-qt
-        working-directory: ${{runner.workspace}}
-        env:
-          GITLAB_AT: ${{ secrets.GITLAB_AT }}
-        run: |
-          git clone --branch=sprint4 https://bakaoh:$GITLAB_AT@gitlab.com/nunchuck/nunchuck-qt nunchuk-qt --depth 1
-          cd nunchuk-qt
-          git submodule update --depth 1 --init --recursive
-          
-      - name: Install packages
-        uses: ryankurte/action-apt@v0.2.0
-        with:
-          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev automake pkg-config bsdmainutils python3
-
+ 
       - name: Cache contrib
         uses: actions/cache@v2
         id: cache-contrib
@@ -69,7 +70,7 @@ jobs:
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin
         run: |
           ./autogen.sh
-          ./configure --without-gui --disable-zmq --with-miniupnpc=no --with-incompatible-bdb
+          ./configure --without-gui --disable-zmq --with-miniupnpc=no --with-incompatible-bdb --with-boost=${{runner.workspace}}/boost_1_73_0
           make -j8
 
       - name: Build SqlCipher
