@@ -26,7 +26,7 @@ jobs:
       - name: Install packages
         uses: ryankurte/action-apt@v0.2.0
         with:
-          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
+          packages: libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev libpulse-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
 
       - name: Cache Qt
         uses: actions/cache@v2
@@ -94,7 +94,9 @@ jobs:
         run: |
           wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/7/linuxdeployqt-7-x86_64.AppImage"
           chmod a+x linuxdeployqt-7-x86_64.AppImage
-          cp ${{runner.workspace}}/build/nunchuck-client-qt deploy/appdir/bin/nunchuk-client-qt
+          wget -c https://github.com/bitcoin-core/HWI/releases/download/1.2.1/hwi-1.2.1-linux-amd64.tar.gz -O - | tar -xz
+          mv hwi deploy/appdir/bin/hwi
+          mv ${{runner.workspace}}/build/nunchuck-client-qt deploy/appdir/bin/nunchuk-client-qt
           export PATH="/opt/qt512/bin:$PATH"
           cd nunchuk-linux
           ../linuxdeployqt-7-x86_64.AppImage ../deploy/appdir/share/applications/nunchuk.desktop -appimage -qmldir=${{runner.workspace}}/nunchuk-qt
