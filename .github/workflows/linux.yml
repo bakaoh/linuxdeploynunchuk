@@ -26,7 +26,7 @@ jobs:
       - name: Install packages
         uses: ryankurte/action-apt@v0.2.0
         with:
-          packages: libxcb-image0 libpulse-dev libxcb-icccm4 libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev libx11-xcb-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
+          packages: libxcb libpulse-dev libevent-dev libssl-dev libdb-dev libdb++-dev build-essential libtool autotools-dev libx11-xcb-dev automake pkg-config bsdmainutils python3 zip mesa-common-dev libglu1-mesa-dev
 
       - name: Cache Qt
         uses: actions/cache@v2
