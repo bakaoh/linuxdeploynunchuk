@@ -92,9 +92,13 @@ jobs:
           cd nunchuk-linux
           ../linuxdeployqt-7-x86_64.AppImage ../deploy/appdir/share/applications/nunchuk.desktop -appimage -qmldir=${{runner.workspace}}/nunchuk-qt
       
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      
       - name: Upload Artifact
         uses: 'actions/upload-artifact@v2'
         with:
-          name: nunchuk-linux-${GITHUB_REF##*/}
+          name: nunchuk-linux-${{ steps.get_version.outputs.VERSION }}
           path: ${{runner.workspace}}/linuxdeploynunchuk/nunchuk-linux/
       
