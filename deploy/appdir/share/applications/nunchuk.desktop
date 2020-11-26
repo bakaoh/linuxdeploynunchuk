@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Nunchuk
+Comment=The best Bitcoin Wallet Application Ever
+Exec=nunchuk-client-qt
+Icon=nunchuk-client-qt
+Categories=Utility;

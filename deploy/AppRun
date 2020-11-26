@@ -1,0 +1,5 @@
+#!/bin/bash
+export QT_QPA_PLATFORMTHEME=gtk2
+HERE="$(dirname "$(readlink -f "${0}")")"
+exec "$HERE/appdir/bin/nunchuk-client-qt" "$@"
+
