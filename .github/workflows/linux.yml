@@ -45,7 +45,7 @@ jobs:
         working-directory: ${{runner.workspace}}/nunchuk-qt/contrib/libnunchuk/contrib/bitcoin
         run: |
           ./autogen.sh
-          ./configure --without-gui --disable-zmq --with-miniupnpc=no --with-incompatible-bdb --disable-bench --disable-tests --with-boost=$BOOST_ROOT
+          ./configure --without-gui --disable-zmq --with-miniupnpc=no --with-incompatible-bdb --disable-bench --disable-tests --with-boost=$BOOST_ROOT_1_72_0
           make -j8
 
       - name: Build SqlCipher
@@ -65,7 +65,7 @@ jobs:
         run: |
           cmake -E make_directory ${{runner.workspace}}/build
           cd build
-          cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=$BOOST_ROOT -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
+          cmake ${{runner.workspace}}/nunchuk-qt -DCMAKE_BUILD_TYPE=Release -DBOOST_ROOT=$BOOST_ROOT_1_72_0 -DCMAKE_PREFIX_PATH=/opt/qt512/lib/cmake
           cmake --build . --config Release -j8
 
       - name: Deploy AppImage
