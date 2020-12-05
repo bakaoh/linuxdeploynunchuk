@@ -91,6 +91,8 @@ jobs:
           chmod a+x linuxdeployqt-7-x86_64.AppImage
           wget -c -q "https://github.com/bitcoin-core/HWI/releases/download/1.2.1/hwi-1.2.1-linux-amd64.tar.gz" -O - | tar -xz
           mv hwi deploy/appdir/bin/hwi
+          git clone https://github.com/bitcoin-core/HWI
+          mv HWI/hwilib/udev nunchuk-linux/
           mv ${{runner.workspace}}/build/nunchuck-client-qt deploy/appdir/bin/nunchuk-client-qt
           export PATH="/opt/qt512/bin:$PATH"
           cd nunchuk-linux
